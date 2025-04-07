@@ -3,14 +3,16 @@ import java.io.Serializable;
 public class Customer implements Serializable {
     private final int id;
     private String fullName;
+    private String city;
     private String creditCardNumber;
     private double balance;
     private final int numberPur;
     private double numberOutlay;
 
-    public Customer(int id, String fullName, String creditCardNumber, double balance, int numberPur, double numberOutlay) {
+    public Customer(int id, String fullName, String city, String creditCardNumber, double balance, int numberPur, double numberOutlay) {
         this.id = id;
         this.fullName = fullName;
+        this.city = city;
         this.creditCardNumber = creditCardNumber;
         this.balance = balance;
         this.numberPur = numberPur;
@@ -19,6 +21,8 @@ public class Customer implements Serializable {
     public int getId() { return id; }
     public String getFullName() { return fullName; }
     public void setFullName(String fullName) { this.fullName = fullName; }
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
     public String getCreditCardNumber() { return creditCardNumber; }
     public void setCreditCardNumber(String creditCardNumber) { this.creditCardNumber = creditCardNumber; }
     public double getBalance() { return balance; }
@@ -31,6 +35,7 @@ public class Customer implements Serializable {
     public String toString() {
         return "Customer " + id +
                 ", ПІБ: " + fullName + '\'' +
+                ", Місто реєстрації: " + city + '\'' +
                 ", Номер картки: " + creditCardNumber + '\'' +
                 ", Баланс: " + balance + '\'' +
                 ", Кількість покупок: " + numberPur + '\'' +

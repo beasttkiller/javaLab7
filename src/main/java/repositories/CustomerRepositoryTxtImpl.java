@@ -9,7 +9,7 @@ public class CustomerRepositoryTxtImpl implements CustomerRepository {
     public void outputList(List<Customer> t, File file) {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(file))){
             for(Customer customer : t){
-                writer.write(customer.getId()+","+customer.getFullName()+','+customer.getCreditCardNumber()+','+customer.getBalance()+
+                writer.write(customer.getId()+","+customer.getFullName()+','+customer.getCity()+','+customer.getCreditCardNumber()+','+customer.getBalance()+
                         ','+customer.getNumberPur() + ','+customer.getNumberOutlay());
                 writer.newLine();
             }
@@ -30,10 +30,10 @@ public class CustomerRepositoryTxtImpl implements CustomerRepository {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 6) {
+                if (parts.length == 7) {
                     customers.add(new Customer(
-                            Integer.parseInt(parts[0]), parts[1], parts[2],
-                            Double.parseDouble(parts[3]), Integer.parseInt(parts[4]), Double.parseDouble(parts[5])));
+                            Integer.parseInt(parts[0]), parts[1],parts[2], parts[3],
+                            Double.parseDouble(parts[4]), Integer.parseInt(parts[5]), Double.parseDouble(parts[6])));
                 } else {
                     System.err.println("Invalid line format: " + line);
                 }
