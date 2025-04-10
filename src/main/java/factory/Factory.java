@@ -1,10 +1,12 @@
 package factory;
 import logic.Customer;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Factory {
     public static List<Customer> createCustomers() {
-        return List.of(
+        return new ArrayList<>(List.of(
                 new Customer(1, "Борисова Марія Олександрівна", "Тернопіль","9862783251613232", 22865.59, 48, 6982.72),
                 new Customer(2, "Шевченко Катерина Сергіївна", "Чернівці", "2525489376385555", 7825.94, 121, 2111.05 ),
                 new Customer(3, "Рудий Максим Ігорович", "Миколаїв", "5269358915769726", 25.68, 86, 108.69 ),
@@ -15,6 +17,6 @@ public class Factory {
                 new Customer(8, "Коцюбинський Вадим Дмитрович", "Херсон", "7973666611280004", 150.21, 0, 0.00),
                 new Customer(9, "Сімперович Олександра Олександріна", "Київ", "8789263420158939", 0.00, 0, 0.00),
                 new Customer(10, "Коваленко Артем Владиславович", "Миколаїв", "8885088972130327",9529.98,357 , 15977.65)
-        );
+        ));
     }
 }

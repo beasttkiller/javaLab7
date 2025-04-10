@@ -1,31 +1,52 @@
 package service;
+import factory.Factory;
 import interfaces.CustomerRepository;
 import io.View;
 import logic.Customer;
 import repositories.CustomerRepositoryBinaryImpl;
 import repositories.CustomerRepositoryTxtImpl;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.List;
 
 public class CustomerService {
+    private static List<Customer> customers= new ArrayList<>();
+    public static List<Customer> returnCustomers() {
+        if(customers.isEmpty()){
+            customers = Factory.createCustomers();
+        }
+        return customers;
+    }
     public List<Customer> findCustomersByFirstLetter(List<Customer> customers, char letter) {
-        return customers.stream()
-                .filter(c -> c.getFullName().charAt(0) == letter)
-                .collect(Collectors.toList());
+        List<Customer> result = new ArrayList<>();
+        for (Customer customer : customers) {
+            if (!customer.getFullName().isEmpty() && customer.getFullName().charAt(0) == letter) {
+                result.add(customer);
+            }
+        }
+        return result;
     }
     public List<Customer> filterByCreditCardRange(List<Customer> customers, String min, String max) {
-        return customers.stream()
-                .filter(c -> c.getCreditCardNumber().compareTo(min) >= 0 &&
-                        c.getCreditCardNumber().compareTo(max) <= 0)
-                .collect(Collectors.toList());
+        List<Customer> result = new ArrayList<>();
+        for (Customer customer : customers) {
+            String card = customer.getCreditCardNumber();
+            if (card.compareTo(min) >= 0 && card.compareTo(max) <= 0) {
+                result.add(customer);
+            }
+        }
+        return result;
     }
-
     public List<Customer> filterByDebt(List<Customer> customers) {
-        return customers.stream()
-                .filter(c -> c.getBalance() < 0)
-                .collect(Collectors.toList());
+        List<Customer> result = new ArrayList<>();
+        for (Customer customer : customers) {
+            if (customer.getBalance() < 0) {
+                result.add(customer);
+            }
+        }
+        return result;
     }
 
     private static final View view= new View();
@@ -53,16 +74,26 @@ public class CustomerService {
     }
 
     public List<Customer> sortByOutlayAndName(List<Customer> customers) {
-        return customers.stream()
-                .sorted(Comparator.comparingDouble(Customer::getNumberOutlay).reversed()
-                        .thenComparing(Customer::getFullName))
-                .collect(Collectors.toList());
+        List<Customer> sortedList = new ArrayList<>(customers);
+        sortedList.sort(new Comparator<Customer>() {
+            @Override
+            public int compare(Customer c1, Customer c2) {
+                int outlayCompare = Double.compare(c2.getNumberOutlay(), c1.getNumberOutlay()); // зворотне порівняння
+                if (outlayCompare != 0) {
+                    return outlayCompare;
+                }
+                return c1.getFullName().compareTo(c2.getFullName());
+            }
+        });
+        return sortedList;
     }
-    public Customer findCustomerByName(List<Customer> customers, String name) {
-        return customers.stream()
-                .filter(c -> c.getFullName().equalsIgnoreCase(name))
-                .findFirst()
-                .orElse(null);
+    public Customer findCustomerById(List<Customer> customers, int id) {
+        for (Customer customer : customers) {
+            if (customer.getId() == id) {
+                return customer;
+            }
+        }
+        return null;
     }
     public double findAveragePurchase(Customer customer) {
         return customer.getNumberPur() > 0 ? customer.getNumberOutlay() / customer.getNumberPur() : 0;
